@@ -12,10 +12,13 @@
                 return;
             }
             
-            const apiUrl = `http://helya.pylex.xyz:10234/api/addlink?url=${encodeURIComponent(urlInput)}`;
+            const apiUrl = `https://helya.pylex.xyz:10234/api/addlink?url=${encodeURIComponent(urlInput)}`;
             
             try {
                 const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error("Erro na requisição: " + response.status);
+                }
                 const data = await response.json();
                 
                 if (data.result) {
@@ -24,7 +27,7 @@
                     document.getElementById("output").innerText = "Erro ao obter o resultado.";
                 }
             } catch (error) {
-                document.getElementById("output").innerText = "Erro ao conectar à API.";
+                document.getElementById("output").innerText = "Erro ao conectar à API: " + error.message;
                 console.error("Erro:", error);
             }
         }
